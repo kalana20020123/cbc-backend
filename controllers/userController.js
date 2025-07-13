@@ -76,7 +76,7 @@ export function deleteUser(req, res) {
         });
     }).catch(() => {
         res.json({
-            message: "User not deleted"
+            message: "User not  deleted"
         });
     });
       
