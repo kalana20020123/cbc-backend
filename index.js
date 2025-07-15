@@ -4,6 +4,9 @@ import mongoose from 'mongoose';
 import productRouter from './routes/productRouter.js';
 import userRouter from './routes/userRouter.js';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv'; // Import dotenv to manage environment variables / DB url hide kirimta
+
+dotenv.config(); // Load environment variables from .env file
 
 const app = express();
 
@@ -32,7 +35,7 @@ app.use("/api/users",userRouter)
 
 
 //DB connection
-const mongoUrl = "mongodb+srv://admin:123@cluster0.69g9f8i.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const mongoUrl = process.env.MONGO_DB_URI // Use the environment variable for the MongoDB URI
 
 mongoose.connect(mongoUrl,{})
 
