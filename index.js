@@ -13,13 +13,13 @@ const app = express();
 app.use(bodyParser.json())
 
 // Middleware to parse JSON bodies 
-/*app.use(
+app.use(
     (req, res, next) => {
        const token = req.header("Authorization") ?.replace("Bearer ", "")
        console.log(token);
 
        if (token != null) {
-        jwt.verify(token, "cbc-secret-key-7973", (error, decoded) => {
+        jwt.verify(token, process.env.SECRET, (error, decoded) => {
             if (!error) {
                 req.user = decoded;
             }
@@ -28,7 +28,7 @@ app.use(bodyParser.json())
          next();
     }
 )
-*/
+
 
 app.use("/api/products",productRouter)
 app.use("/api/users",userRouter) 
