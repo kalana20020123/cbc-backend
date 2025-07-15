@@ -37,25 +37,23 @@ export function createProduct(req,res){
     })
 }
 
-//view part
-export function getProduct(req,res){
+//view all products
+export async function getProduct(req,res){
 
-    Product.find().then(
-        (productList)=>{
-            res.json({
-                list : productList
-            })
-        }
-    ).catch(
-        (err)=>{
-            res.json({
-                message :"Error"
-            })
-        }
-    )
+    try {
+        const productList = await Product.find()
+
+        res.json({
+          list : productList
+       })
+    }catch(err){
+        res.json({
+            message: "Error retrieving products"
+        })
+    }   
 }
 
-//delete part
+//delete by name
 export function deleteProduct(req,res){
     Product.deleteOne({name : req.params.name}).then(
         ()=>{

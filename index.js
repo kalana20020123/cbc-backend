@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json())
 
 // Middleware to parse JSON bodies 
-app.use(
+/*app.use(
     (req, res, next) => {
        const token = req.header("Authorization") ?.replace("Bearer ", "")
        console.log(token);
@@ -25,6 +25,7 @@ app.use(
          next();
     }
 )
+*/
 
 app.use("/api/products",productRouter)
 app.use("/api/users",userRouter) 
