@@ -9,6 +9,23 @@ dotenv.config(); // Load environment variables from .env file
 export async function createUser(req, res) {
     const newUserData = req.body; 
 
+    if(newUserData.type == "admin") {  // Check if the user is trying to create an admin account
+    
+        if(req.user ==  null) {   // If the user is not logged in, return an error message
+            res.json({
+                message: "You should log as an admin"
+            });
+            return;
+        }
+       
+        if(req.user.type != "admin") {  // If the user is logged in, check if they are an admin
+            res.json({
+                message: "You should log as an admin"
+            });
+            return;
+        }
+    }
+
     newUserData.password = bcrypt.hashSync(newUserData.password, 10); // Hashing the password
 
     const user = new User(newUserData); // Creating a new user instance
@@ -66,3 +83,10 @@ export async function loginUser(req, res) {
     }
 }
 
+
+
+//admin 
+//johndoe@example.com   123
+
+//customer
+//jjohndoe@example.com  123

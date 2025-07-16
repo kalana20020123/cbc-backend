@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json())
 
 // Middleware to parse JSON bodies 
-/*app.use(
+app.use(
     (req, res, next) => {
        const token = req.header("Authorization") ?.replace("Bearer ", "")
        console.log(token);
@@ -28,7 +28,7 @@ app.use(bodyParser.json())
          next();
     }
 )
-*/
+
 
 //app.use("/api/products",productRouter)
 app.use("/api/users",userRouter) 
@@ -45,7 +45,7 @@ connection.once("open",()=>{
     console.log("Database connected");
 })
 
-              
+// Start the server       
 app.listen(
     3000,
     ()=>{
