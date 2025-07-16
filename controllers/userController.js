@@ -83,6 +83,31 @@ export async function loginUser(req, res) {
     }
 }
 
+// Function to check if the user is an admin
+export function isAdmin(req) { 
+
+    if (req.user == null) { 
+        return false
+    } 
+
+    if (req.user.type =! "admin") {
+        return false
+    } 
+    return true;
+}
+
+// Function to check if the user is a customer
+export function isCustomer(req) { 
+
+    if (req.user == null) { 
+        return false
+    } 
+
+    if (req.user.type != "customer") {
+        return false
+    } 
+    return true;
+}
 
 
 //admin 
