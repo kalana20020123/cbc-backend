@@ -1,10 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-//import productRouter from './routes/productRouter.js';
 import userRouter from './routes/userRouter.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'; // Import dotenv to manage environment variables / DB url hide kirimta
+import productRouter from './routes/productRouter.js';
+
+
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -32,6 +34,7 @@ app.use(
 
 //app.use("/api/products",productRouter)
 app.use("/api/users",userRouter) 
+app.use("/api/products",productRouter) 
 
 
 //DB connection
