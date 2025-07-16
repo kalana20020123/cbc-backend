@@ -39,8 +39,8 @@ export async function loginUser(req, res) {
             const isPasswordCorrect = bcrypt.compareSync(req.body.password, user.password); // Compare passwords
 
             if (isPasswordCorrect) {
-                const token = jwt.sign({
-                    email: user.email,
+                const token = jwt.sign({   // Create a JWT token
+                    email: user.email, 
                     firstName: user.firstName,
                     lastName: user.lastName,
                     isBlocked: user.isBlocked,
