@@ -39,7 +39,7 @@ export async function createUser(req, res) {
         res.json({
             message: "User is not created"
         });
-    }
+    } 
 }
 
 // Function to log in a user
