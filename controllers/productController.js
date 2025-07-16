@@ -1,7 +1,8 @@
 import Product from '../models/product.js';
 
+
 //create part
-export function createProduct(req,res){
+export async function createProduct(req, res) {
 
      console.log(req.user);
 
@@ -18,24 +19,22 @@ export function createProduct(req,res){
         });
         return;
      }
-              
+  
 
-     const product = new Product(req.body)
+  const product = new Product(req.body);
 
-     product.save().then(
-
-        ()=>{
-            res.json({
-                message: "Product is created"
-            })
-        }
-    
-     ).catch(()=>{
-        res.json({
-             message: "Product is not created"
-        })
-    })
+  try {
+    await product.save();
+    res.json({
+      message: "Product is created"
+    });
+  } catch (error) {
+    res.json({
+      message: "Product is not created"
+    });
+  }
 }
+
 
 //view all products
 export async function getProduct(req,res){
@@ -54,51 +53,39 @@ export async function getProduct(req,res){
 }
 
 //delete by name
-export function deleteProduct(req,res){
-    Product.deleteOne({name : req.params.name}).then(
-        ()=>{
-            res.json(
-                {
-                    message : "Product deleted successfully"
-                }
-            )
-        }
-    ).catch(
-        (err)=>{
-            res.json({
-                message :"Product not deleted"
-            })
-        }
-    )
+export async function deleteProduct(req, res) {
+    try {
+        await Product.deleteOne({ name: req.params.name });
+        res.json({
+            message: "Product deleted successfully"
+        });
+    } catch (err) {
+        res.json({
+            message: "Product not deleted"
+        });
+    }
 }
 
 //view by name
-export function getProductByName(req,res){
+export async function getProductByName(req, res) {
+    const name = req.params.name;
 
-    const name =req.params.name;
+    try {
+        const productList = await Product.find({ name: name });
 
-    Product.find({name : name}).then(
-
-     (productList)=>{
-        
-      if(productList.length === 0){
+        if (productList.length === 0) {
             res.json({
-                message : "Product not found"
-            })
-        }else{      
-
+                message: "Product not found"
+            });
+        } else {
             res.json({
-                list : productList
-            })
-      }    
-    }
-    ).catch(
-        ()=>{
-            res.json({
-                message : "Error"
-            })
+                list: productList
+            });
         }
-    )
+    } catch (error) {
+        res.json({
+            message: "Error"
+        });
+    }
 }
-
 

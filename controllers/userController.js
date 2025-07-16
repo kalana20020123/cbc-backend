@@ -6,68 +6,63 @@ import dotenv from 'dotenv'; // Import dotenv to manage environment variables
 dotenv.config(); // Load environment variables from .env file
 
 // Function to create a new user
-export function createUser(req, res) {
-
+export async function createUser(req, res) {
     const newUserData = req.body; 
 
     newUserData.password = bcrypt.hashSync(newUserData.password, 10); // Hashing the password
 
     const user = new User(newUserData); // Creating a new user instance
 
-    user.save().then(() => {
+    try {
+        await user.save();
         res.json({
             message: "User is created"
         });
-    }).catch(() => {
+    } catch {
         res.json({
             message: "User is not created"
         });
-    });
+    }
 }
 
 // Function to log in a user
-export function loginUser(req, res) {
-    
-    User.find({email : req.body.email}).then( // Find user by email
-        (users) => {
-            if (users.length == 0) { 
+export async function loginUser(req, res) {
+    try {
+        const users = await User.find({ email: req.body.email }); // Find user by email
+
+        if (users.length == 0) {
+            res.json({
+                message: "User not found"
+            });
+        } else {
+            const user = users[0]; // Get the first user from the array
+            const isPasswordCorrect = bcrypt.compareSync(req.body.password, user.password); // Compare passwords
+
+            if (isPasswordCorrect) {
+                const token = jwt.sign({
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    isBlocked: user.isBlocked,
+                    type: user.type,
+                    profilePicture: user.profilePicture
+                }, process.env.SECRET);
+
                 res.json({
-                    message: "User not found"
-                })
+                    message: "User logged in successfully",
+                    token: token
+                });
             } else {
-                const user = users[0] // Get the first user from the array
-                const isPasswordCorrect = bcrypt.compareSync(req.body.password, user.password); // Compare the provided password with the stored hashed password
-
-                if (isPasswordCorrect) {
-                    
-                    const token = jwt.sign({ // Create a JWT token
-                       email: user.email, // Include user email in the token
-                       firstName: user.firstName,
-                       lastName: user.lastName,
-                       isBlocked: user.isBlocked,
-                       type: user.type,
-                       profilePicture: user.profilePicture
-                    } , process.env.SECRET) // Sign the token with a secret key
-                    
-                    res.json({
-                        message: "User logged in successfully",
-                        token: token
-                    });
-
-                } else {
-                    res.json({
-                        message: "Incorrect password"
-                    })
-                }               
+                res.json({
+                    message: "Incorrect password"
+                });
             }
         }
-    ).catch((error) => {
+    } catch (error) {
         res.json({
             message: "An error occurred",
             error: error.message
         });
-    });
-      
-    
+    }
 }
 
