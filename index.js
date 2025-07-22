@@ -5,6 +5,7 @@ import userRouter from './routes/userRouter.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'; // Import dotenv to manage environment variables / DB url hide kirimta
 import productRouter from './routes/productRouter.js';
+import orderRouter from './routes/orderRouter.js';
 
 
 
@@ -35,6 +36,7 @@ app.use(
 //app.use("/api/products",productRouter)
 app.use("/api/users",userRouter) 
 app.use("/api/products",productRouter) 
+app.use("/api/orders", orderRouter); 
 
 
 //DB connection
