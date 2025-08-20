@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'; // Import dotenv to manage environment variables / DB url hide kirimta
 import productRouter from './routes/productRouter.js';
 import orderRouter from './routes/orderRouter.js';
+import cors from "cors";
 
 
 
@@ -41,6 +42,8 @@ app.use("/api/orders", orderRouter);
 
 //DB connection
 const mongoUrl = process.env.MONGO_DB_URI // Use the environment variable for the MongoDB URI
+
+app.use(cors())
 
 mongoose.connect(mongoUrl,{})
 
