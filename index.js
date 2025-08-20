@@ -14,6 +14,8 @@ dotenv.config(); // Load environment variables from .env file
 
 const app = express();
 
+app.use(cors())
+
 app.use(bodyParser.json())
 
 // Middleware to parse JSON bodies 
@@ -43,7 +45,6 @@ app.use("/api/orders", orderRouter);
 //DB connection
 const mongoUrl = process.env.MONGO_DB_URI // Use the environment variable for the MongoDB URI
 
-app.use(cors())
 
 mongoose.connect(mongoUrl,{})
 
